@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">BMI CALCULATOR</string>
+    <string name="app_name">BMI Calculator</string>
+
+    <!-- ส่วนหัวของหน้าจอ -->
+    <string name="title_main">ดัชนีมวลกาย (BMI)</string>
+    <string name="subtitle_main">ตรวจวัดสุขภาพและสัดส่วนร่างกาย</string>
+
+    <!-- ส่วนกรอกข้อมูล -->
+    <string name="label_weight">น้ำหนักตัว (Weight)</string>
+    <string name="hint_weight">เช่น 65.5</string>
+    <string name="suffix_weight">กก. (kg)</string>
+
+    <string name="label_height">ส่วนสูง (Height)</string>
+    <string name="hint_height">เช่น 172</string>
+    <string name="suffix_height">ซม. (cm)</string>
+
+    <!-- ปุ่มกด -->
+    <string name="btn_reset">ล้างข้อมูล</string>
+    <string name="btn_calculate">คำนวณ BMI</string>
+
+    <!-- ส่วนแสดงผลลัพธ์ -->
+    <string name="label_result_bmi">ผลการวิเคราะห์ดัชนีมวลกาย</string>
+    <string name="default_bmi_value">--</string>
+    <string name="tv_bmi_status_default">กรอกข้อมูลแล้วกดคำนวณ</string>
+    <string name="tv_advice_default">เกณฑ์เอเชีย: ดัชนีมวลกายที่เหมาะสมที่สุดควรอยู่ระหว่าง 18.5 - 22.9 กก./ม.²</string>
+
+    <!-- แถบเกณฑ์สี -->
+    <string name="scale_underweight">&lt;18.5\nผอม</string>
+    <string name="scale_normal">18.5-22.9\nสมส่วน</string>
+    <string name="scale_overweight">23-24.9\nท้วม</string>
+    <string name="scale_obese">≥25\nอ้วน</string>
 </resources>
