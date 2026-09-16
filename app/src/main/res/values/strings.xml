@@ -17,6 +17,7 @@
     <!-- ปุ่มกด -->
     <string name="btn_reset">ล้างข้อมูล</string>
     <string name="btn_calculate">คำนวณ BMI</string>
+    <string name="btn_change_language">EN</string>
 
     <!-- ส่วนแสดงผลลัพธ์ -->
     <string name="label_result_bmi">ผลการวิเคราะห์ดัชนีมวลกาย</string>
