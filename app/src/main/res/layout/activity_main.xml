@@ -7,14 +7,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F6F9"
+    tools:ignore="Overdraw,TextContrastCheck"
     tools:context=".MainActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
         android:overScrollMode="never"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="@dimen/content_max_width">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,18 +57,49 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/subtitle_main"
-                        android:textColor="#64748B"
+                        android:textColor="#475569"
                         android:textSize="13sp" />
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnChangeLanguage"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/btn_change_language"
-                    android:textColor="#0F172A"
-                    android:textStyle="bold" />
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLangTh"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="56dp"
+                        android:minHeight="48dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/lang_th"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/lang_toggle_bg"
+                        android:textColor="@color/lang_toggle_text"
+                        app:strokeColor="#CBD5E1"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLangEn"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="56dp"
+                        android:minHeight="48dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/lang_en"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/lang_toggle_bg"
+                        android:textColor="@color/lang_toggle_text"
+                        app:strokeColor="#CBD5E1"
+                        app:cornerRadius="12dp" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -85,6 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
+                        android:labelFor="@+id/etWeight"
                         android:text="@string/label_weight"
                         android:textColor="#334155"
                         android:textSize="13sp"
@@ -104,24 +142,29 @@
                         app:boxStrokeWidthFocused="2dp"
                         app:hintEnabled="false"
                         app:suffixText="@string/suffix_weight"
-                        app:suffixTextColor="#64748B">
+                        app:suffixTextColor="#475569">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:digits="0123456789.,"
                             android:hint="@string/hint_weight"
+                            android:imeOptions="actionNext|flagNoExtractUi"
+                            android:importantForAutofill="no"
                             android:inputType="numberDecimal"
                             android:paddingVertical="14dp"
                             android:textColor="#0F172A"
-                            android:textColorHint="#94A3B8"
-                            android:textSize="16sp" />
+                            android:textColorHint="#475569"
+                            android:textSize="16sp"
+                            tools:ignore="TextContrastCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
+                        android:labelFor="@+id/etHeight"
                         android:text="@string/label_height"
                         android:textColor="#334155"
                         android:textSize="13sp"
@@ -140,18 +183,22 @@
                         app:boxStrokeWidthFocused="2dp"
                         app:hintEnabled="false"
                         app:suffixText="@string/suffix_height"
-                        app:suffixTextColor="#64748B">
+                        app:suffixTextColor="#475569">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etHeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:digits="0123456789.,"
                             android:hint="@string/hint_height"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:importantForAutofill="no"
                             android:inputType="numberDecimal"
                             android:paddingVertical="14dp"
                             android:textColor="#0F172A"
-                            android:textColorHint="#94A3B8"
-                            android:textSize="16sp" />
+                            android:textColorHint="#475569"
+                            android:textSize="16sp"
+                            tools:ignore="TextContrastCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -161,17 +208,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnReset"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
-                    android:layout_height="54dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="54dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:text="@string/btn_reset"
-                    android:textColor="#64748B"
+                    android:textColor="#475569"
                     android:textSize="15sp"
                     app:cornerRadius="16dp"
                     app:strokeColor="#CBD5E1"
@@ -180,7 +229,8 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCalculate"
                     android:layout_width="0dp"
-                    android:layout_height="54dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="54dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1.4"
                     android:backgroundTint="#4F46E5"
@@ -214,7 +264,7 @@
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.05"
                         android:text="@string/label_result_bmi"
-                        android:textColor="#64748B"
+                        android:textColor="#475569"
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
@@ -234,7 +284,8 @@
                         android:layout_marginTop="4dp"
                         app:cardBackgroundColor="#F1F5F9"
                         app:cardCornerRadius="50dp"
-                        app:cardElevation="0dp">
+                        app:cardElevation="0dp"
+                        tools:ignore="UselessParent">
 
                         <TextView
                             android:id="@+id/tvBmiStatus"
@@ -243,7 +294,7 @@
                             android:paddingHorizontal="20dp"
                             android:paddingVertical="6dp"
                             android:text="@string/tv_bmi_status_default"
-                            android:textColor="#475569"
+                            android:textColor="#334155"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </com.google.android.material.card.MaterialCardView>
@@ -286,43 +337,48 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:baselineAligned="false"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:maxLines="2"
                             android:text="@string/scale_underweight"
-                            android:textAlignment="center"
-                            android:textColor="#94A3B8"
-                            android:textSize="10sp" />
+                            android:textColor="#475569"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
+                            android:gravity="center"
+                            android:maxLines="2"
                             android:text="@string/scale_normal"
-                            android:textAlignment="center"
-                            android:textColor="#94A3B8"
-                            android:textSize="10sp" />
+                            android:textColor="#475569"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:maxLines="2"
                             android:text="@string/scale_overweight"
-                            android:textAlignment="center"
-                            android:textColor="#94A3B8"
-                            android:textSize="10sp" />
+                            android:textColor="#475569"
+                            android:textSize="11sp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:maxLines="2"
                             android:text="@string/scale_obese"
-                            android:textAlignment="center"
-                            android:textColor="#94A3B8"
-                            android:textSize="10sp" />
+                            android:textColor="#475569"
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <TextView
@@ -331,11 +387,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="18dp"
                         android:background="#F8FAFC"
+                        android:gravity="center"
                         android:lineSpacingExtra="4dp"
                         android:padding="14dp"
                         android:text="@string/tv_advice_default"
-                        android:textAlignment="center"
-                        android:textColor="#64748B"
+                        android:textColor="#334155"
                         android:textSize="12sp" />
 
                 </LinearLayout>

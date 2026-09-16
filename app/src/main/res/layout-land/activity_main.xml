@@ -7,260 +7,415 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F6F9"
+    tools:ignore="Overdraw,TextContrastCheck"
     tools:context=".MainActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
         android:overScrollMode="never"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="@dimen/content_max_width">
 
-        <!-- เปลี่ยนเป็นแนวนอน (horizontal) แบ่ง 50/50 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false"
+            android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- ================= คอลัมน์ซ้าย: กรอกข้อมูล ================= -->
+            <!-- Header: Title, Subtitle, and Language Toggle -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginEnd="10dp">
+                android:layout_marginBottom="16dp"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <!-- Header -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ดัชนีมวลกาย (BMI)"
-                    android:textColor="#0F172A"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="ตรวจวัดสุขภาพและสัดส่วนร่างกาย"
-                    android:textColor="#64748B"
-                    android:textSize="12sp" />
-
-                <!-- Input Card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp"
-                    app:strokeColor="#E2E8F0"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="6dp"
-                            android:text="น้ำหนักตัว (Weight)"
-                            android:textColor="#334155"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
-                            app:boxBackgroundColor="#F8FAFC"
-                            app:boxCornerRadiusBottomEnd="14dp"
-                            app:boxCornerRadiusBottomStart="14dp"
-                            app:boxCornerRadiusTopEnd="14dp"
-                            app:boxCornerRadiusTopStart="14dp"
-                            app:boxStrokeColor="#6366F1"
-                            app:hintEnabled="false"
-                            app:suffixText="กก."
-                            app:suffixTextColor="#64748B">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etWeight"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal"
-                                android:paddingVertical="12dp"
-                                android:textColor="#0F172A"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="6dp"
-                            android:text="ส่วนสูง (Height)"
-                            android:textColor="#334155"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:boxBackgroundColor="#F8FAFC"
-                            app:boxCornerRadiusBottomEnd="14dp"
-                            app:boxCornerRadiusBottomStart="14dp"
-                            app:boxCornerRadiusTopEnd="14dp"
-                            app:boxCornerRadiusTopStart="14dp"
-                            app:boxStrokeColor="#6366F1"
-                            app:hintEnabled="false"
-                            app:suffixText="ซม."
-                            app:suffixTextColor="#64748B">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etHeight"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal"
-                                android:paddingVertical="12dp"
-                                android:textColor="#0F172A"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Buttons -->
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnReset"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:text="ล้าง"
-                        android:textColor="#64748B"
-                        android:textSize="14sp"
-                        app:cornerRadius="14dp"
-                        app:strokeColor="#CBD5E1" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_main"
+                        android:textColor="#0F172A"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCalculate"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1.5"
-                        android:backgroundTint="#4F46E5"
-                        android:text="คำนวณ"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="14dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/subtitle_main"
+                        android:textColor="#475569"
+                        android:textSize="12sp" />
                 </LinearLayout>
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLangTh"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="56dp"
+                        android:minHeight="48dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/lang_th"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/lang_toggle_bg"
+                        android:textColor="@color/lang_toggle_text"
+                        app:strokeColor="#CBD5E1"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLangEn"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="56dp"
+                        android:minHeight="48dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/lang_en"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/lang_toggle_bg"
+                        android:textColor="@color/lang_toggle_text"
+                        app:strokeColor="#CBD5E1"
+                        app:cornerRadius="12dp" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
 
-
-            <!-- ================= คอลัมน์ขวา: ผลลัพธ์ ================= -->
+            <!-- 2-Column Body -->
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="2dp"
-                    app:strokeColor="#E2E8F0"
-                    app:strokeWidth="1dp">
+                <!-- ================= คอลัมน์ซ้าย: กรอกข้อมูล ================= -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <!-- Input Card -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ผลการวิเคราะห์"
-                            android:textColor="#64748B"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvBmiValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:text="--"
-                            android:textColor="#0F172A"
-                            android:textSize="48sp" />
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            app:cardBackgroundColor="#F1F5F9"
-                            app:cardCornerRadius="50dp"
-                            app:cardElevation="0dp">
-
-                            <TextView
-                                android:id="@+id/tvBmiStatus"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingHorizontal="16dp"
-                                android:paddingVertical="4dp"
-                                android:text="รอคำนวณ"
-                                android:textColor="#475569"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </com.google.android.material.card.MaterialCardView>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="#E2E8F0"
+                        app:strokeWidth="1dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="6dp"
-                            android:layout_marginTop="16dp"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="2dp" android:background="#38BDF8" />
-                            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.2" android:layout_marginEnd="2dp" android:background="#10B981" />
-                            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginEnd="2dp" android:background="#F59E0B" />
-                            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="#EF4444" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="6dp"
+                                android:labelFor="@+id/etWeight"
+                                android:text="@string/label_weight"
+                                android:textColor="#334155"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                app:boxBackgroundColor="#F8FAFC"
+                                app:boxCornerRadiusBottomEnd="14dp"
+                                app:boxCornerRadiusBottomStart="14dp"
+                                app:boxCornerRadiusTopEnd="14dp"
+                                app:boxCornerRadiusTopStart="14dp"
+                                app:boxStrokeColor="#6366F1"
+                                app:hintEnabled="false"
+                                app:suffixText="@string/suffix_weight"
+                                app:suffixTextColor="#475569">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etWeight"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:digits="0123456789.,"
+                                    android:hint="@string/hint_weight"
+                                    android:imeOptions="actionNext|flagNoExtractUi"
+                                    android:importantForAutofill="no"
+                                    android:inputType="numberDecimal"
+                                    android:paddingVertical="12dp"
+                                    android:textColor="#0F172A"
+                                    android:textColorHint="#475569"
+                                    android:textSize="14sp"
+                                    tools:ignore="TextContrastCheck" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="6dp"
+                                android:labelFor="@+id/etHeight"
+                                android:text="@string/label_height"
+                                android:textColor="#334155"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxBackgroundColor="#F8FAFC"
+                                app:boxCornerRadiusBottomEnd="14dp"
+                                app:boxCornerRadiusBottomStart="14dp"
+                                app:boxCornerRadiusTopEnd="14dp"
+                                app:boxCornerRadiusTopStart="14dp"
+                                app:boxStrokeColor="#6366F1"
+                                app:hintEnabled="false"
+                                app:suffixText="@string/suffix_height"
+                                app:suffixTextColor="#475569">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHeight"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:digits="0123456789.,"
+                                    android:hint="@string/hint_height"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:importantForAutofill="no"
+                                    android:inputType="numberDecimal"
+                                    android:paddingVertical="12dp"
+                                    android:textColor="#0F172A"
+                                    android:textColorHint="#475569"
+                                    android:textSize="14sp"
+                                    tools:ignore="TextContrastCheck" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                        <TextView
-                            android:id="@+id/tvAdvice"
+                    <!-- Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnReset"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:minHeight="50dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:text="@string/btn_reset"
+                            android:textColor="#475569"
+                            android:textSize="14sp"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="#CBD5E1" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCalculate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:minHeight="50dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1.5"
+                            android:backgroundTint="#4F46E5"
+                            android:text="@string/btn_calculate"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="14dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- ================= คอลัมน์ขวา: ผลลัพธ์ ================= -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="#E2E8F0"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:background="#F8FAFC"
-                            android:padding="10dp"
-                            android:text="เกณฑ์เอเชีย: ปกติ 18.5 - 22.9"
-                            android:textAlignment="center"
-                            android:textColor="#64748B"
-                            android:textSize="11sp" />
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="20dp">
 
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_result_bmi"
+                                android:textColor="#475569"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvBmiValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-black"
+                                android:text="@string/default_bmi_value"
+                                android:textColor="#0F172A"
+                                android:textSize="48sp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                app:cardBackgroundColor="#F1F5F9"
+                                app:cardCornerRadius="50dp"
+                                app:cardElevation="0dp"
+                                tools:ignore="UselessParent">
+
+                                <TextView
+                                    android:id="@+id/tvBmiStatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="16dp"
+                                    android:paddingVertical="4dp"
+                                    android:text="@string/tv_bmi_status_default"
+                                    android:textColor="#334155"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="6dp"
+                                android:layout_marginTop="16dp"
+                                android:orientation="horizontal">
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="2dp"
+                                    android:layout_weight="1"
+                                    android:background="#38BDF8" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="2dp"
+                                    android:layout_weight="1.2"
+                                    android:background="#10B981" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="2dp"
+                                    android:layout_weight="1"
+                                    android:background="#F59E0B" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="#EF4444" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:baselineAligned="false"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:maxLines="2"
+                                    android:text="@string/scale_underweight"
+                                    android:textColor="#475569"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.2"
+                                    android:gravity="center"
+                                    android:maxLines="2"
+                                    android:text="@string/scale_normal"
+                                    android:textColor="#475569"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:maxLines="2"
+                                    android:text="@string/scale_overweight"
+                                    android:textColor="#475569"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:maxLines="2"
+                                    android:text="@string/scale_obese"
+                                    android:textColor="#475569"
+                                    android:textSize="11sp" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvAdvice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:background="#F8FAFC"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:text="@string/tv_advice_default"
+                                android:textColor="#334155"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
