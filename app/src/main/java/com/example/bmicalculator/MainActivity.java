@@ -3,12 +3,14 @@ package com.example.bmicalculator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,15 +25,18 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String PREFS = "Settings";
+    private static final String KEY_LANG = "My_Lang";
+    private static final String KEY_SYSTEM_LANG = "System_Lang_At_Choice";
+    private static final String STATE_BMI = "last_bmi";
+
+    private float lastBmi = Float.NaN;
+    private TextView tvBmiValue;
+    private TextView tvBmiStatus;
+
     @Override
     protected void attachBaseContext(Context newBase) {
-        SharedPreferences prefs = newBase.getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String defaultDeviceLang = Locale.getDefault().getLanguage();
-        String savedLang = prefs.getString("My_Lang", defaultDeviceLang);
-        String currentLang = "th".equalsIgnoreCase(savedLang) ? "th" : "en";
-
-        Locale locale = new Locale(currentLang);
-        Locale.setDefault(locale);
+        Locale locale = new Locale(resolveLang(newBase));
         Configuration config = new Configuration(newBase.getResources().getConfiguration());
         config.setLocale(locale);
         super.attachBaseContext(newBase.createConfigurationContext(config));
@@ -39,25 +44,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        loadLocale();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout()
+                    | WindowInsetsCompat.Type.ime());
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return insets;
         });
 
         MaterialButtonToggleGroup toggleLanguage = findViewById(R.id.toggleLanguage);
-        String currentLang = getCurrentLang();
+        // The language comes from resolveLang(); a restored checked state would fire the
+        // listener after recreation and re-save a stale choice, so don't let it restore.
+        toggleLanguage.setSaveEnabled(false);
+        findViewById(R.id.btnLangTh).setSaveEnabled(false);
+        findViewById(R.id.btnLangEn).setSaveEnabled(false);
+        String currentLang = resolveLang(this);
         toggleLanguage.check(currentLang.equals("th") ? R.id.btnLangTh : R.id.btnLangEn);
 
         toggleLanguage.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (!isChecked) return;
             String target = checkedId == R.id.btnLangTh ? "th" : "en";
-            if (!target.equals(getCurrentLang())) {
+            if (!target.equals(resolveLang(this))) {
                 setLocale(target);
             }
         });
@@ -66,9 +77,14 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText etHeight = findViewById(R.id.etHeight);
         MaterialButton btnReset = findViewById(R.id.btnReset);
         MaterialButton btnCalculate = findViewById(R.id.btnCalculate);
-        TextView tvBmiValue = findViewById(R.id.tvBmiValue);
-        TextView tvBmiStatus = findViewById(R.id.tvBmiStatus);
+        tvBmiValue = findViewById(R.id.tvBmiValue);
+        tvBmiStatus = findViewById(R.id.tvBmiStatus);
         TextView tvAdvice = findViewById(R.id.tvAdvice);
+
+        if (savedInstanceState != null) {
+            lastBmi = savedInstanceState.getFloat(STATE_BMI, Float.NaN);
+            showResult();
+        }
 
         findViewById(R.id.main).setOnClickListener(v -> {
             etWeight.clearFocus();
@@ -88,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
             hideKeyboard(v);
             etWeight.setText("");
             etHeight.setText("");
-            tvBmiValue.setText(getString(R.string.default_bmi_value));
-            tvBmiStatus.setText(getString(R.string.tv_bmi_status_default));
+            lastBmi = Float.NaN;
+            showResult();
             tvAdvice.setText(getString(R.string.tv_advice_default));
             etWeight.clearFocus();
             etHeight.clearFocus();
@@ -108,23 +124,42 @@ public class MainActivity extends AppCompatActivity {
                     float weight = Float.parseFloat(weightStr);
                     float height = Float.parseFloat(heightStr) / 100;
                     if (height <= 0 || weight <= 0) return;
-                    float bmi = weight / (height * height);
-
-                    tvBmiValue.setText(String.format(Locale.getDefault(), "%.1f", bmi));
-
-                    if (bmi < 18.5) {
-                        tvBmiStatus.setText(getString(R.string.scale_underweight).replace("\n", " "));
-                    } else if (bmi <= 22.9) {
-                        tvBmiStatus.setText(getString(R.string.scale_normal).replace("\n", " "));
-                    } else if (bmi <= 24.9) {
-                        tvBmiStatus.setText(getString(R.string.scale_overweight).replace("\n", " "));
-                    } else {
-                        tvBmiStatus.setText(getString(R.string.scale_obese).replace("\n", " "));
-                    }
+                    // Round to the displayed precision so the number and category always agree
+                    lastBmi = Math.round(weight / (height * height) * 100) / 100f;
+                    showResult();
                 } catch (NumberFormatException ignored) {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putFloat(STATE_BMI, lastBmi);
+    }
+
+    // WHO classification, as used by calculator.net
+    private void showResult() {
+        if (Float.isNaN(lastBmi)) {
+            tvBmiValue.setText(getString(R.string.default_bmi_value));
+            tvBmiStatus.setText(getString(R.string.tv_bmi_status_default));
+            return;
+        }
+        Locale locale = getResources().getConfiguration().getLocales().get(0);
+        tvBmiValue.setText(String.format(locale, "%.2f", lastBmi));
+
+        int status;
+        if (lastBmi < 18.5f) {
+            status = R.string.scale_underweight;
+        } else if (lastBmi < 25f) {
+            status = R.string.scale_normal;
+        } else if (lastBmi < 30f) {
+            status = R.string.scale_overweight;
+        } else {
+            status = R.string.scale_obese;
+        }
+        tvBmiStatus.setText(getString(status).replace("\n", " "));
     }
 
     private void hideKeyboard(View view) {
@@ -142,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
         for (char c : input.toCharArray()) {
             if (c >= '๐' && c <= '๙') {
                 sb.append((char) ('0' + (c - '๐')));
-            } else if (c >= '\u0660' && c <= '\u0669') {
-                sb.append((char) ('0' + (c - '\u0660')));
+            } else if (c >= '٠' && c <= '٩') {
+                sb.append((char) ('0' + (c - '٠')));
             } else if (c == ',') {
                 sb.append('.');
             } else {
@@ -154,32 +189,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-        SharedPreferences.Editor editor = getSharedPreferences("Settings", Context.MODE_PRIVATE).edit();
-        editor.putString("My_Lang", lang);
-        editor.apply();
-
+        getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+                .putString(KEY_LANG, lang)
+                .putString(KEY_SYSTEM_LANG, systemLang())
+                .apply();
         recreate();
     }
 
-    private String getCurrentLang() {
-        SharedPreferences prefs = getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String defaultDeviceLang = Locale.getDefault().getLanguage();
-        String currentLang = prefs.getString("My_Lang", defaultDeviceLang);
-        return "th".equalsIgnoreCase(currentLang) ? "th" : "en";
+    /** Device language, unaffected by the in-app override. */
+    private static String systemLang() {
+        return Resources.getSystem().getConfiguration().getLocales().get(0).getLanguage();
     }
 
-    private void loadLocale() {
-        String language = getCurrentLang();
-        Locale locale = new Locale(language);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    /**
+     * The most recent choice wins: an in-app TH/EN choice holds until the device
+     * language is changed, after which the app follows the device again.
+     */
+    private static String resolveLang(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        String system = systemLang();
+        String chosen = prefs.getString(KEY_LANG, null);
+        if (chosen != null && !system.equals(prefs.getString(KEY_SYSTEM_LANG, null))) {
+            prefs.edit().remove(KEY_LANG).remove(KEY_SYSTEM_LANG).apply();
+            chosen = null;
+        }
+        String lang = chosen != null ? chosen : system;
+        return "th".equalsIgnoreCase(lang) ? "th" : "en";
     }
 }

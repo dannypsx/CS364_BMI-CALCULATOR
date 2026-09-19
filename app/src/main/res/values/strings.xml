@@ -25,11 +25,11 @@
     <string name="label_result_bmi">BMI Analysis Result</string>
     <string name="default_bmi_value">--</string>
     <string name="tv_bmi_status_default">Enter data and press calculate</string>
-    <string name="tv_advice_default">Asian criteria: Optimal BMI should be between 18.5 - 22.9 kg/m²</string>
+    <string name="tv_advice_default">WHO criteria: a healthy BMI is between 18.5 - 24.9 kg/m²</string>
 
     <!-- แถบเกณฑ์สี -->
     <string name="scale_underweight">&lt;18.5\nUnderweight</string>
-    <string name="scale_normal">18.5-22.9\nNormal</string>
-    <string name="scale_overweight">23-24.9\nOverweight</string>
-    <string name="scale_obese">≥25\nObese</string>
+    <string name="scale_normal">18.5-24.9\nNormal</string>
+    <string name="scale_overweight">25-29.9\nOverweight</string>
+    <string name="scale_obese">≥30\nObese</string>
 </resources>

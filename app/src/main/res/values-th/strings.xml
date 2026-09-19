@@ -23,11 +23,11 @@
     <string name="label_result_bmi">ผลการวิเคราะห์ดัชนีมวลกาย</string>
     <string name="default_bmi_value">--</string>
     <string name="tv_bmi_status_default">กรอกข้อมูลแล้วกดคำนวณ</string>
-    <string name="tv_advice_default">เกณฑ์เอเชีย: ดัชนีมวลกายที่เหมาะสมที่สุดควรอยู่ระหว่าง 18.5 - 22.9 กก./ม.²</string>
+    <string name="tv_advice_default">เกณฑ์ WHO: ดัชนีมวลกายที่เหมาะสมควรอยู่ระหว่าง 18.5 - 24.9 กก./ม.²</string>
 
     <!-- แถบเกณฑ์สี -->
     <string name="scale_underweight">&lt;18.5\nผอม</string>
-    <string name="scale_normal">18.5-22.9\nสมส่วน</string>
-    <string name="scale_overweight">23-24.9\nท้วม</string>
-    <string name="scale_obese">≥25\nอ้วน</string>
+    <string name="scale_normal">18.5-24.9\nปกติ</string>
+    <string name="scale_overweight">25-29.9\nน้ำหนักเกิน</string>
+    <string name="scale_obese">≥30\nอ้วน</string>
 </resources>
