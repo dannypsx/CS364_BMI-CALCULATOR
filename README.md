@@ -16,10 +16,23 @@
 
 ---
 
-## <img src="assets/mobile.png" width="24" height="24" style="vertical-align: middle;" /> ตัวอย่างหน้าตาแอปพลิเคชัน (UI Preview)
+## <img src="assets/mobile.png" width="24" height="24" style="vertical-align: middle;" /> ตัวอย่างการคำนวณและการแสดงผล (UI Preview - TH / EN)
 
 <div align="center">
-  <img src="screenshot.png" alt="BMI Calculator App Preview" width="320" />
+  <table>
+    <tr>
+      <th align="center">🇹🇭 ภาษาไทย (Thai Mode)</th>
+      <th align="center">🇬🇧 ภาษาอังกฤษ (English Mode)</th>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="screenshot_th.png" alt="BMI Calculator Thai Preview" width="310" />
+      </td>
+      <td align="center">
+        <img src="screenshot_en.png" alt="BMI Calculator English Preview" width="310" />
+      </td>
+    </tr>
+  </table>
 </div>
 
 ---
