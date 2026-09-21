@@ -5,6 +5,10 @@
     <string name="title_main">ดัชนีมวลกาย (BMI)</string>
     <string name="subtitle_main">ตรวจวัดสุขภาพและสัดส่วนร่างกาย</string>
 
+    <!-- ส่วนการตั้งค่าขนาดตัวอักษร (Checklist #10) -->
+    <string name="switch_follow_system_font">ปรับขนาดอักษรตามเครื่อง</string>
+    <string name="switch_follow_system_font_desc">ปรับตามการตั้งค่าขนาดตัวอักษรของระบบ</string>
+
     <!-- ส่วนกรอกข้อมูล -->
     <string name="label_weight">น้ำหนักตัว (Weight)</string>
     <string name="hint_weight">เช่น 65.5</string>
@@ -30,4 +34,10 @@
     <string name="scale_normal">18.5-24.9\nปกติ</string>
     <string name="scale_overweight">25-29.9\nน้ำหนักเกิน</string>
     <string name="scale_obese">≥30\nอ้วน</string>
+
+    <!-- ระดับภาวะเสี่ยง (BMI Risk Levels) -->
+    <string name="status_underweight">น้ำหนักน้อยกว่าเกณฑ์ (ผอม)</string>
+    <string name="status_normal">ปกติ / อยู่ในเกณฑ์สมส่วน</string>
+    <string name="status_overweight">น้ำหนักเกินเกณฑ์ (ท้วม)</string>
+    <string name="status_obese">ภาวะอ้วน / อันตราย</string>
 </resources>

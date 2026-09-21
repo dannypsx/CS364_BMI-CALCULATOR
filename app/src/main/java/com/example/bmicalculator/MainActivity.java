@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,26 +22,41 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String PREFS = "Settings";
     private static final String KEY_LANG = "My_Lang";
     private static final String KEY_SYSTEM_LANG = "System_Lang_At_Choice";
+    private static final String KEY_FOLLOW_SYSTEM_FONT = "Follow_System_Font";
     private static final String STATE_BMI = "last_bmi";
+
+    private DecimalFormat formatter = new DecimalFormat("#,##0.00");
 
     private float lastBmi = Float.NaN;
     private TextView tvBmiValue;
     private TextView tvBmiStatus;
+    private MaterialCardView cardBmiStatus;
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        SharedPreferences prefs = newBase.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        boolean followSystem = prefs.getBoolean(KEY_FOLLOW_SYSTEM_FONT, true);
+
         Locale locale = new Locale(resolveLang(newBase));
         Configuration config = new Configuration(newBase.getResources().getConfiguration());
         config.setLocale(locale);
+        if (!followSystem) {
+            config.fontScale = 1.0f; // คงขนาดตัวอักษรเดิมไว้ (Checklist #10)
+        }
         super.attachBaseContext(newBase.createConfigurationContext(config));
     }
 
@@ -56,9 +74,17 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // ---------------- Runtime Font Scale (Checklist #10) ----------------
+        MaterialSwitch switchFontScale = findViewById(R.id.switchFontScale);
+        SharedPreferences prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        switchFontScale.setChecked(prefs.getBoolean(KEY_FOLLOW_SYSTEM_FONT, true));
+        switchFontScale.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            prefs.edit().putBoolean(KEY_FOLLOW_SYSTEM_FONT, isChecked).apply();
+            recreate();
+        });
+
+        // ---------------- Language Settings (Checklist #9) ----------------
         MaterialButtonToggleGroup toggleLanguage = findViewById(R.id.toggleLanguage);
-        // The language comes from resolveLang(); a restored checked state would fire the
-        // listener after recreation and re-save a stale choice, so don't let it restore.
         toggleLanguage.setSaveEnabled(false);
         findViewById(R.id.btnLangTh).setSaveEnabled(false);
         findViewById(R.id.btnLangEn).setSaveEnabled(false);
@@ -73,12 +99,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // ---------------- Input & Controls ----------------
         TextInputEditText etWeight = findViewById(R.id.etWeight);
         TextInputEditText etHeight = findViewById(R.id.etHeight);
+
+        // Input Filter (Checklist #3 & Handout 1.1): ตัวเลขไม่เกิน 8 หลัก ทศนิยมไม่เกิน 2 หลัก
+        InputFilter decimalFilter = new DecimalDigitsInputFilter(8, 2);
+        etWeight.setFilters(new InputFilter[]{decimalFilter});
+        etHeight.setFilters(new InputFilter[]{decimalFilter});
+
         MaterialButton btnReset = findViewById(R.id.btnReset);
         MaterialButton btnCalculate = findViewById(R.id.btnCalculate);
         tvBmiValue = findViewById(R.id.tvBmiValue);
         tvBmiStatus = findViewById(R.id.tvBmiStatus);
+        cardBmiStatus = findViewById(R.id.cardBmiStatus);
         TextView tvAdvice = findViewById(R.id.tvAdvice);
 
         if (savedInstanceState != null) {
@@ -122,10 +156,9 @@ public class MainActivity extends AppCompatActivity {
             if (!weightStr.isEmpty() && !heightStr.isEmpty()) {
                 try {
                     float weight = Float.parseFloat(weightStr);
-                    float height = Float.parseFloat(heightStr) / 100;
+                    float height = Float.parseFloat(heightStr) / 100f;
                     if (height <= 0 || weight <= 0) return;
-                    // Round to the displayed precision so the number and category always agree
-                    lastBmi = Math.round(weight / (height * height) * 100) / 100f;
+                    lastBmi = weight / (height * height);
                     showResult();
                 } catch (NumberFormatException ignored) {
                 }
@@ -134,32 +167,61 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // เมื่อขนาดตัวอักษรของระบบเปลี่ยน (Runtime Font Scale) ให้ recreate activity ถ้าเลือกปรับตามระบบ
+        boolean followSystem = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getBoolean(KEY_FOLLOW_SYSTEM_FONT, true);
+        if (followSystem) {
+            recreate();
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putFloat(STATE_BMI, lastBmi);
     }
 
-    // WHO classification, as used by calculator.net
+    // Checklist #4 & #5: Formatting 2 decimals and dynamic Risk Level styling
     private void showResult() {
         if (Float.isNaN(lastBmi)) {
             tvBmiValue.setText(getString(R.string.default_bmi_value));
             tvBmiStatus.setText(getString(R.string.tv_bmi_status_default));
+            tvBmiStatus.setTextColor(ContextCompat.getColor(this, R.color.status_default_text));
+            cardBmiStatus.setCardBackgroundColor(ContextCompat.getColor(this, R.color.status_default_bg));
             return;
         }
-        Locale locale = getResources().getConfiguration().getLocales().get(0);
-        tvBmiValue.setText(String.format(locale, "%.2f", lastBmi));
 
-        int status;
+        // Checklist #4: Format BMI to 2 decimal places using DecimalFormat
+        tvBmiValue.setText(formatter.format(lastBmi));
+
+        // Checklist #5: Set risk level text and colors according to WHO criteria
+        int statusTextRes;
+        int statusColorRes;
+        int statusBgColorRes;
+
         if (lastBmi < 18.5f) {
-            status = R.string.scale_underweight;
+            statusTextRes = R.string.status_underweight;
+            statusColorRes = R.color.bmi_underweight;
+            statusBgColorRes = R.color.bmi_underweight_bg;
         } else if (lastBmi < 25f) {
-            status = R.string.scale_normal;
+            statusTextRes = R.string.status_normal;
+            statusColorRes = R.color.bmi_normal;
+            statusBgColorRes = R.color.bmi_normal_bg;
         } else if (lastBmi < 30f) {
-            status = R.string.scale_overweight;
+            statusTextRes = R.string.status_overweight;
+            statusColorRes = R.color.bmi_overweight;
+            statusBgColorRes = R.color.bmi_overweight_bg;
         } else {
-            status = R.string.scale_obese;
+            statusTextRes = R.string.status_obese;
+            statusColorRes = R.color.bmi_obese;
+            statusBgColorRes = R.color.bmi_obese_bg;
         }
-        tvBmiStatus.setText(getString(status).replace("\n", " "));
+
+        tvBmiStatus.setText(getString(statusTextRes));
+        tvBmiStatus.setTextColor(ContextCompat.getColor(this, statusColorRes));
+        cardBmiStatus.setCardBackgroundColor(ContextCompat.getColor(this, statusBgColorRes));
     }
 
     private void hideKeyboard(View view) {
@@ -215,5 +277,22 @@ public class MainActivity extends AppCompatActivity {
         }
         String lang = chosen != null ? chosen : system;
         return "th".equalsIgnoreCase(lang) ? "th" : "en";
+    }
+}
+
+// ---------------- Checklist #3 & Handout 1.2 ----------------
+class DecimalDigitsInputFilter implements InputFilter {
+    private Pattern mPattern;
+
+    DecimalDigitsInputFilter(int digits, int digitsAfterZero) {
+        mPattern = Pattern.compile("[0-9]{0," + (digits - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
+    }
+
+    @Override
+    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+        Matcher matcher = mPattern.matcher(dest);
+        if (!matcher.matches())
+            return "";
+        return null;
     }
 }

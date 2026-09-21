@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- App Surface & Background -->
+    <color name="screen_bg">#F4F6F9</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_stroke">#E2E8F0</color>
+    <color name="input_bg">#F8FAFC</color>
+    <color name="input_stroke_focused">#6366F1</color>
+
+    <!-- Typography -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_label">#334155</color>
+    <color name="text_hint">#475569</color>
+
+    <!-- Buttons -->
+    <color name="btn_calculate_bg">#4F46E5</color>
+    <color name="btn_calculate_text">#FFFFFF</color>
+    <color name="btn_reset_stroke">#CBD5E1</color>
+    <color name="btn_reset_text">#475569</color>
+    <color name="btn_lang_stroke">#CBD5E1</color>
+
+    <!-- Default Status & Advice -->
+    <color name="status_default_bg">#F1F5F9</color>
+    <color name="status_default_text">#334155</color>
+    <color name="advice_bg">#F8FAFC</color>
+    <color name="advice_text">#334155</color>
+
+    <!-- Scale Indicator Bar -->
+    <color name="scale_bar_underweight">#38BDF8</color>
+    <color name="scale_bar_normal">#10B981</color>
+    <color name="scale_bar_overweight">#F59E0B</color>
+    <color name="scale_bar_obese">#EF4444</color>
+
+    <!-- BMI Risk Level Colors (Checked in Checklist #5) -->
+    <color name="bmi_underweight">#0284C7</color>
+    <color name="bmi_underweight_bg">#E0F2FE</color>
+    <color name="bmi_normal">#059669</color>
+    <color name="bmi_normal_bg">#D1FAE5</color>
+    <color name="bmi_overweight">#D97706</color>
+    <color name="bmi_overweight_bg">#FEF3C7</color>
+    <color name="bmi_obese">#DC2626</color>
+    <color name="bmi_obese_bg">#FEE2E2</color>
 </resources>

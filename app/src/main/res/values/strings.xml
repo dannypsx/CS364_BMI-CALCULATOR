@@ -5,6 +5,10 @@
     <string name="title_main">Body Mass Index (BMI)</string>
     <string name="subtitle_main">Health and Body Measurement</string>
 
+    <!-- ส่วนการตั้งค่าขนาดตัวอักษร (Checklist #10) -->
+    <string name="switch_follow_system_font">Scale font with device</string>
+    <string name="switch_follow_system_font_desc">Adapt font size to OS settings</string>
+
     <!-- ส่วนกรอกข้อมูล -->
     <string name="label_weight">Weight</string>
     <string name="hint_weight">e.g. 65.5</string>
@@ -32,4 +36,10 @@
     <string name="scale_normal">18.5-24.9\nNormal</string>
     <string name="scale_overweight">25-29.9\nOverweight</string>
     <string name="scale_obese">≥30\nObese</string>
+
+    <!-- ระดับภาวะเสี่ยง (BMI Risk Levels) -->
+    <string name="status_underweight">Underweight</string>
+    <string name="status_normal">Normal weight</string>
+    <string name="status_overweight">Overweight</string>
+    <string name="status_obese">Obese</string>
 </resources>
