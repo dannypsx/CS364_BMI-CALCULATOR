@@ -1,10 +1,10 @@
-# CS364 - Assignment 1: BMI Calculator (ดัชนีมวลกาย)
+# <img src="assets/bmi.png" width="28" height="28" style="vertical-align: middle;" /> CS364 - Assignment 1: BMI Calculator (ดัชนีมวลกาย)
 
 แอปพลิเคชันสำหรับคำนวณค่าดัชนีมวลกาย (Body Mass Index : BMI) บนระบบปฏิบัติการ Android พัฒนาสำหรับรายวิชา CS364 มหาวิทยาลัยธรรมศาสตร์ อ้างอิงเกณฑ์การคำนวณและจำแนกตามองค์การอนามัยโลก (WHO) จาก [calculator.net/bmi-calculator](https://www.calculator.net/bmi-calculator.html)
 
 ---
 
-## 👥 รายชื่อและหน้าที่ของสมาชิกในกลุ่ม
+## <img src="assets/team.png" width="24" height="24" style="vertical-align: middle;" /> รายชื่อและหน้าที่ของสมาชิกในกลุ่ม
 
 | ลำดับ | ชื่อ - นามสกุล | รหัสนักศึกษา | หน้าที่และความรับผิดชอบ |
 |:---:|:---|:---:|:---|
@@ -13,3 +13,19 @@
 | 3 | นาย วุฒิกร บุญทวี | 6709650623 | ออกแบบและจัดโครงสร้าง Layout แบบ Responsive (Portrait + Landscape) |
 | 4 | นาย พลธรรม ศรีงาม | 6709650508 | ออกแบบและจัดโครงสร้าง Layout แบบ Responsive (Portrait + Landscape) |
 | 5 | นาย สหรัฐ อุดมวัฒน์ทวี | 6709650680 | การตรวจสอบข้อมูลนำเข้า (Input Validation), ระดับภาวะเสี่ยง (BMI Risk Level), การปรับขนาดอักษรตามเครื่อง (Runtime Font Scale) |
+
+---
+
+## <img src="assets/mobile.png" width="24" height="24" style="vertical-align: middle;" /> ตัวอย่างหน้าตาแอปพลิเคชัน (UI Preview)
+
+<div align="center">
+  <img src="screenshot.png" alt="BMI Calculator App Preview" width="320" />
+</div>
+
+---
+
+## <img src="assets/settings.png" width="24" height="24" style="vertical-align: middle;" /> ความต้องการของระบบและการเปิดใช้งาน
+- **Min SDK**: 28 (Android 9.0 Pie ขึ้นไป)
+- **Target SDK**: 36 (Android 15+)
+- **Compile SDK**: 36
+- **IDE**: Android Studio Ladybug / Meerkat
